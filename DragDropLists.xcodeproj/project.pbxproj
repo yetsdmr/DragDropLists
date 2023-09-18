@@ -11,6 +11,8 @@
 		4A325C9A2AB190AB000520E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A325C992AB190AB000520E3 /* ContentView.swift */; };
 		4A325C9C2AB190AD000520E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A325C9B2AB190AD000520E3 /* Assets.xcassets */; };
 		4A325C9F2AB190AD000520E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A325C9E2AB190AD000520E3 /* Preview Assets.xcassets */; };
+		4AC5726C2AB8626B007F1366 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC5726B2AB8626B007F1366 /* Task.swift */; };
+		4AC5726E2AB862CA007F1366 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC5726D2AB862CA007F1366 /* Home.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		4A325C992AB190AB000520E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4A325C9B2AB190AD000520E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A325C9E2AB190AD000520E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4AC5726B2AB8626B007F1366 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		4AC5726D2AB862CA007F1366 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +55,8 @@
 		4A325C962AB190AB000520E3 /* DragDropLists */ = {
 			isa = PBXGroup;
 			children = (
+				4AC5726A2AB8625C007F1366 /* View */,
+				4AC572692AB86255007F1366 /* Model */,
 				4A325C972AB190AB000520E3 /* DragDropListsApp.swift */,
 				4A325C992AB190AB000520E3 /* ContentView.swift */,
 				4A325C9B2AB190AD000520E3 /* Assets.xcassets */,
@@ -65,6 +71,22 @@
 				4A325C9E2AB190AD000520E3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4AC572692AB86255007F1366 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4AC5726B2AB8626B007F1366 /* Task.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4AC5726A2AB8625C007F1366 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4AC5726D2AB862CA007F1366 /* Home.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A325C9A2AB190AB000520E3 /* ContentView.swift in Sources */,
+				4AC5726C2AB8626B007F1366 /* Task.swift in Sources */,
+				4AC5726E2AB862CA007F1366 /* Home.swift in Sources */,
 				4A325C982AB190AB000520E3 /* DragDropListsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
