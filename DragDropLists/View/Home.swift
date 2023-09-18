@@ -25,7 +25,77 @@ struct Home: View {
     
     var body: some View {
         HStack(spacing: 2) {
+            TodoView()
             
+            WorkingView()
+            
+            CompletedView()
+        }
+    }
+    
+    // Tasks View
+    @ViewBuilder
+    func TasksView(_ tasks: [Task]) -> some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            ForEach(tasks) { task in
+                GeometryReader {
+                    // Task Row
+                    TaskRow(task, $0.size)
+                }
+                .frame(height: 45)
+            }
+        })
+        .frame(maxWidth: .infinity)
+        .padding()
+    }
+    
+    // Task Row
+    @ViewBuilder
+    func TaskRow(_ task: Task, _ size: CGSize) -> some View {
+        Text(task.title)
+            .font(.callout)
+            .padding(.horizontal, 15)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: size.height)
+            .background(.white, in: .rect(cornerRadius: 10))
+    }
+    
+    // Todo View
+    @ViewBuilder
+    func TodoView() -> some View {
+        NavigationStack {
+            ScrollView(.vertical) {
+                TasksView(todo)
+            }
+            .navigationTitle("Todo")
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
+        }
+    }
+    
+    // Working View
+    @ViewBuilder
+    func WorkingView() -> some View {
+        NavigationStack {
+            ScrollView(.vertical) {
+                TasksView(working)
+            }
+            .navigationTitle("Working")
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
+        }
+    }
+    
+    // Completed View
+    @ViewBuilder
+    func CompletedView() -> some View {
+        NavigationStack {
+            ScrollView(.vertical) {
+                TasksView(completed)
+            }
+            .navigationTitle("Completed")
+            .frame(maxWidth: .infinity)
+            .background(.ultraThinMaterial)
         }
     }
 }
