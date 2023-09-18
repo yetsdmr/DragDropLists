@@ -56,8 +56,97 @@ struct Home: View {
             .font(.callout)
             .padding(.horizontal, 15)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: size.height)
+            .frame(width: size.width, height: size.height, alignment: .leading)
             .background(.white, in: .rect(cornerRadius: 10))
+            .contentShape(.dragPreview, .rect(cornerRadius: 10))
+            .draggable(task.id.uuidString) {
+                Text(task.title)
+                    .font(.callout)
+                    .padding(.horizontal, 15)
+                    .frame(height: size.height)
+                    .background(.white)
+                    .contentShape(.dragPreview, .rect(cornerRadius: 10))
+                    .onAppear(perform: {
+                        currentlyDragging = task
+                    })
+                    .dropDestination (for: String.self) { items, location in
+                        currentlyDragging = nil
+                        return false
+                    } isTargeted: { status in
+                        if let currentlyDragging, status, currentlyDragging.id != task.id {
+                            withAnimation(.snappy) {
+                                // Now let's Implement Cross List Interaction
+                                appendTask(task.status)
+                                
+                                switch task.status {
+                                case .todo:
+                                    replaceItem(tasks: &todo, droppingTask: task, status: .todo)
+                                case .working:
+                                    replaceItem(tasks: &working, droppingTask: task, status: .working)
+                                case .completed:
+                                    replaceItem(tasks: &completed, droppingTask: task, status: .completed)
+                                }
+                            }
+                        }
+                    }
+            }
+    }
+    
+    // Appending And Removing task from one List to another List
+    func appendTask(_ status: Status) {
+        if let currentlyDragging {
+            switch status {
+            case .todo:
+                // Safe Check and Inserting into List
+                if !todo.contains(where: { $0.id == currentlyDragging.id }) {
+                    // Updating it's Status
+                    var updatedTask = currentlyDragging
+                    updatedTask.status = .todo
+                    // Adding to the List
+                    todo.append(updatedTask)
+                    // Removing it from all other Lists
+                    working.removeAll(where: { $0.id == currentlyDragging.id })
+                    completed.removeAll(where: { $0.id == currentlyDragging.id })
+                }
+            case .working:
+                if !working.contains(where: { $0.id == currentlyDragging.id }) {
+                    // Updating it's Status
+                    var updatedTask = currentlyDragging
+                    updatedTask.status = .working
+                    // Adding to the List
+                    working.append(updatedTask)
+                    // Removing it from all other Lists
+                    todo.removeAll(where: { $0.id == currentlyDragging.id })
+                    completed.removeAll(where: { $0.id == currentlyDragging.id })
+                }
+                
+            case .completed:
+                if !completed.contains(where: { $0.id == currentlyDragging.id }) {
+                    // Updating it's Status
+                    var updatedTask = currentlyDragging
+                    updatedTask.status = .completed
+                    // Adding to the List
+                    completed.append(updatedTask)
+                    // Removing it from all other Lists
+                    todo.removeAll(where: { $0.id == currentlyDragging.id })
+                    working.removeAll(where: { $0.id == currentlyDragging.id })
+                }
+                
+            }
+        }
+    }
+    
+    // Replacing Items Within the List
+    func replaceItem(tasks: inout [Task], droppingTask: Task, status: Status) {
+        if let currentlyDragging {
+            if let sourceIndex = tasks.firstIndex(where: { $0.id == currentlyDragging.id }),
+               let destinationIndex = tasks.firstIndex(where: { $0.id == droppingTask.id }) {
+                // Swapping Item's on the List
+                var sourceItem = tasks.remove(at: sourceIndex)
+                sourceItem.status = status
+                tasks.insert(sourceItem, at: destinationIndex)
+            }
+        }
     }
     
     // Todo View
@@ -70,6 +159,16 @@ struct Home: View {
             .navigationTitle("Todo")
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
+            .contentShape(.rect)
+            .dropDestination(for: String.self) { items, location in
+                // Appeding to the last of the Current List, if the item is not present on that list
+                withAnimation(.snappy) {
+                    appendTask(.todo)
+                }
+                return true
+            } isTargeted : { _ in
+                
+            }
         }
     }
     
@@ -83,6 +182,16 @@ struct Home: View {
             .navigationTitle("Working")
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
+            .contentShape(.rect)
+            .dropDestination(for: String.self) { items, location in
+                // Appeding to the last of the Current List, if the item is not present on that list
+                withAnimation(.snappy) {
+                    appendTask(.working)
+                }
+                return true
+            } isTargeted : { _ in
+                
+            }
         }
     }
     
@@ -96,6 +205,16 @@ struct Home: View {
             .navigationTitle("Completed")
             .frame(maxWidth: .infinity)
             .background(.ultraThinMaterial)
+            .contentShape(.rect)
+            .dropDestination(for: String.self) { items, location in
+                // Appeding to the last of the Current List, if the item is not present on that list
+                withAnimation(.snappy) {
+                    appendTask(.completed)
+                }
+                return true
+            } isTargeted : { _ in
+                
+            }
         }
     }
 }
